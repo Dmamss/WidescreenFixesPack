@@ -146,12 +146,12 @@ int OnModuleStart()
     if (!ptr)
         return 0;
 
-    int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 1);
+    int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 0);
     int DualAnalogPatch = inireader.ReadInteger("MAIN", "DualAnalogPatch", 1);
     fStickDeadzone = inireader.ReadFloat("MAIN", "StickDeadzone", 0.1f);
     int SpeedStickControl = inireader.ReadInteger("MAIN", "SpeedStickControl", 1);
     int Enable60FPS = inireader.ReadInteger("MAIN", "Enable60FPS", 0);
-    int UnthrottleEmuDuringLoading = inireader.ReadInteger("MAIN", "UnthrottleEmuDuringLoading", 1);
+    int UnthrottleEmuDuringLoading = inireader.ReadInteger("MAIN", "UnthrottleEmuDuringLoading", 0);
     fFOVFactor = inireader.ReadFloat("MAIN", "FOVFactor", 1.0f);
     if (fFOVFactor <= 0.0f)
         fFOVFactor = 1.0f;
