@@ -101,20 +101,6 @@ void __0fGUInputKDirectAxis6JEInputKeyfTCPatched(int _this, int axis, int unk) {
     }
 }
 
-int PSPLoaderHandler()
-{
-    //int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 0);
-
-    //if (SkipIntro)
-    {
-        uintptr_t ptr = pattern.get(0, "25 28 00 00 25 30 00 00 25 38 00 00", 12);
-        injector.MakeNOP(ptr);
-        //ptr = pattern.get(1, "25 28 00 00 25 30 00 00 25 38 00 00", 12);
-        //injector.MakeNOP(ptr); //game gets stuck if no intros are played
-    }
-
-    return 0;
-}
 
 int CheckFloatParams(float X, float Y, float SizeX, float SizeY)
 {
