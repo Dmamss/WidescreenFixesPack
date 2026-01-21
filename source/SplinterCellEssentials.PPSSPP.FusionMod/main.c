@@ -103,13 +103,16 @@ void __0fGUInputKDirectAxis6JEInputKeyfTCPatched(int _this, int axis, int unk) {
 
 int PSPLoaderHandler()
 {
-    // SkipIntro removed to prevent crash
-    /*
+    //int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 0);
+
+    //if (SkipIntro)
     {
         uintptr_t ptr = pattern.get(0, "25 28 00 00 25 30 00 00 25 38 00 00", 12);
         injector.MakeNOP(ptr);
+        //ptr = pattern.get(1, "25 28 00 00 25 30 00 00 25 38 00 00", 12);
+        //injector.MakeNOP(ptr); //game gets stuck if no intros are played
     }
-    */
+
     return 0;
 }
 
@@ -138,17 +141,20 @@ float AdjustFOV(float f, float ar)
 
 int OnModuleStart() 
 {
+    // Délai ajouté au début de la fonction originale
+    sceKernelDelayThread(5000000);
+
     uintptr_t ptr = pattern.get_first("B0 FF BD 27 B0 03 8C C4", 0);
 
     if (!ptr)
         return 0;
 
-    int SkipIntro = 0; // Disabled
+    int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 1);
     int DualAnalogPatch = inireader.ReadInteger("MAIN", "DualAnalogPatch", 1);
     fStickDeadzone = inireader.ReadFloat("MAIN", "StickDeadzone", 0.1f);
     int SpeedStickControl = inireader.ReadInteger("MAIN", "SpeedStickControl", 1);
     int Enable60FPS = inireader.ReadInteger("MAIN", "Enable60FPS", 0);
-    int UnthrottleEmuDuringLoading = 0; // Disabled to prevent crash
+    int UnthrottleEmuDuringLoading = inireader.ReadInteger("MAIN", "UnthrottleEmuDuringLoading", 1);
     fFOVFactor = inireader.ReadFloat("MAIN", "FOVFactor", 1.0f);
     if (fFOVFactor <= 0.0f)
         fFOVFactor = 1.0f;
@@ -359,8 +365,11 @@ int module_start(SceSize args, void* argp)
                 }
             }
 
-            if (result)
-                OnModuleStart();
+            if (result) {
+                // Création du thread pour lancer OnModuleStart de manière asynchrone
+                SceUID thid = sceKernelCreateThread("PatchThread", (void*)OnModuleStart, 0x18, 0x1000, 0, NULL);
+                if (thid >= 0) sceKernelStartThread(thid, 0, NULL);
+            }
         }
     }
     return 0;
