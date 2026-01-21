@@ -103,16 +103,13 @@ void __0fGUInputKDirectAxis6JEInputKeyfTCPatched(int _this, int axis, int unk) {
 
 int PSPLoaderHandler()
 {
-    //int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 0);
-
-    //if (SkipIntro)
+    // SkipIntro removed to prevent crash
+    /*
     {
         uintptr_t ptr = pattern.get(0, "25 28 00 00 25 30 00 00 25 38 00 00", 12);
         injector.MakeNOP(ptr);
-        //ptr = pattern.get(1, "25 28 00 00 25 30 00 00 25 38 00 00", 12);
-        //injector.MakeNOP(ptr); //game gets stuck if no intros are played
     }
-
+    */
     return 0;
 }
 
@@ -146,12 +143,12 @@ int OnModuleStart()
     if (!ptr)
         return 0;
 
-    int SkipIntro = inireader.ReadInteger("MAIN", "SkipIntro", 0);
+    int SkipIntro = 0; // Disabled
     int DualAnalogPatch = inireader.ReadInteger("MAIN", "DualAnalogPatch", 1);
     fStickDeadzone = inireader.ReadFloat("MAIN", "StickDeadzone", 0.1f);
     int SpeedStickControl = inireader.ReadInteger("MAIN", "SpeedStickControl", 1);
     int Enable60FPS = inireader.ReadInteger("MAIN", "Enable60FPS", 0);
-    int UnthrottleEmuDuringLoading = inireader.ReadInteger("MAIN", "UnthrottleEmuDuringLoading", 0);
+    int UnthrottleEmuDuringLoading = 0; // Disabled to prevent crash
     fFOVFactor = inireader.ReadFloat("MAIN", "FOVFactor", 1.0f);
     if (fFOVFactor <= 0.0f)
         fFOVFactor = 1.0f;
