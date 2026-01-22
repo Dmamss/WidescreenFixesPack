@@ -141,7 +141,6 @@ float AdjustFOV(float f, float ar)
 
 int OnModuleStart() 
 {
-    // Délai ajouté au début de la fonction originale
     sceKernelDelayThread(5000000);
 
     uintptr_t ptr = pattern.get_first("B0 FF BD 27 B0 03 8C C4", 0);
@@ -366,7 +365,6 @@ int module_start(SceSize args, void* argp)
             }
 
             if (result) {
-                // Création du thread pour lancer OnModuleStart de manière asynchrone
                 SceUID thid = sceKernelCreateThread("PatchThread", (void*)OnModuleStart, 0x18, 0x1000, 0, NULL);
                 if (thid >= 0) sceKernelStartThread(thid, 0, NULL);
             }
